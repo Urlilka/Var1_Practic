@@ -28,6 +28,9 @@ class LoginView(Tk):
         self.password_Entry.pack(anchor="center")
         # Текст (всплывающий)
 
+        self.message_Lable = ttk.Label(self, foreground="#ff0099")
+        self.message_Lable.pack(anchor="center")
+
         # Кнопка входа
         self.enter_Button = ttk.Button(self, text="Вход", command = self.LoginFunc)
         self.bind("<Key-Return>", lambda e: self.LoginFunc())
