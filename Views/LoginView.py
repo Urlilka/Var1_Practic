@@ -29,15 +29,31 @@ class LoginView(Tk):
         # Текст (всплывающий)
 
         self.message_Lable = ttk.Label(self, foreground="#ff0099")
-        self.message_Lable.pack(anchor="center")
+        self.message_Lable.pack(anchor="center", expand=1)
 
         # Кнопка входа
         self.enter_Button = ttk.Button(self, text="Вход", command = self.LoginFunc)
         self.bind("<Key-Return>", lambda e: self.LoginFunc())
         self.enter_Button.pack(anchor="center",expand=1)
 
+        self.counter_for_bun = {}
+
     def LoginFunc(self):
-        print("nya?")
+        login = self.login_Entry.get()
+        password = self.password_Entry.get()
+        user = UserController.auth(login=login, password=password)
+
+
+        if login == "" or password == "":
+            self.message_Lable["text"] = "Необходимо заполнить все поля"
+
+        else:
+            if not user:
+                self.message_Lable["text"] = f"Логин и/или Пароль заполнены неверно"
+                if login not in self.counter_for_bun:
+                    self.counter_for_bun[login] = 0
+            else:
+                print("_")
 
 
 if __name__ == "__main__":
