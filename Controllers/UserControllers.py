@@ -25,6 +25,7 @@ class UserController:
 
         Args:
             id (int): id обновляемого пользователя
+            **fields: Обновляемый параметр = Значение
         """
         for key,value in fields.items():
             Users.update({key:value}).where(Users.id == id).execute()

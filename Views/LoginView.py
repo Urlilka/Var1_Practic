@@ -36,24 +36,55 @@ class LoginView(Tk):
         self.bind("<Key-Return>", lambda e: self.LoginFunc())
         self.enter_Button.pack(anchor="center",expand=1)
 
-        self.counter_for_bun = {}
+        self.counter_for_ban = {}
 
     def LoginFunc(self):
+        """Функция Входа с проверкой на разные случаи и функцией бана пользователя.
+        """
         login = self.login_Entry.get()
         password = self.password_Entry.get()
         user = UserController.auth(login=login, password=password)
-
 
         if login == "" or password == "":
             self.message_Lable["text"] = "Необходимо заполнить все поля"
 
         else:
             if not user:
-                self.message_Lable["text"] = f"Логин и/или Пароль заполнены неверно"
-                if login not in self.counter_for_bun:
-                    self.counter_for_bun[login] = 0
+                self.message_Lable["text"] = f"Вы ввели неверный логин и/или пароль.\nПожалуйста проверьте ещё раз введенные данные"
+
+                if login not in self.counter_for_ban:
+                    self.counter_for_ban[login] = 0
+                else:
+                    self.counter_for_ban[login] =+ 1
+
+                if self.counter_for_ban[login] >= 3:
+                    UserController.update(user.id,ban=1)
+
+            elif user.role_id == 1:
+                self.counter_for_ban[login] = 0
+                self.message_Lable["text"] = f"Вход в окно Админа"
+                print("переход в админку")
+
+            elif user.first_auth == 1:
+                self.counter_for_ban[login] = 0
+                self.message_Lable["text"] = f"Вход в окно Изменения Пароля"
+                print("переход в изменение пароля")
+
+            elif user.date_auth is not None and (datetime.now().date() - user.date_auth).days >= 31:
+                self.counter_for_ban[login] = 0
+                UserController.update(user.id, ban=1)
+                self.message_Lable["text"] = f"В связи не авторизации в течении месяца - ваша учётная запись была заблокированна.\nОбратитесь к администратору"
+            
+            elif user.ban == 1:
+                self.message_Lable["text"] = f"Вы заблокированы.\nОбратитесь к администратору"
+            
+            elif user.role_id == 2:
+                self.counter_for_ban[login] = 0
+                self.message_Lable["text"] = f"Вход в окно Пользователя"
+                print("Переход в окно пользователя")
+
             else:
-                print("_")
+                self.message_Lable["text"] = "Произошла непредвиденная ошибка"
 
 
 if __name__ == "__main__":
