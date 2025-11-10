@@ -52,7 +52,7 @@ class LoginView(Tk):
 
 
     def LoginFunc(self):
-        """Функция Входа с проверкой на разные случаи и функцией бана пользователя.
+        """Функция Входа в Админ панель, Изменения пароля и с проверкой на разные случаи и функцией бана пользователя в зависимости от ситуаций.
         """
         login = self.login_Entry.get()
         password = self.password_Entry.get()
@@ -73,12 +73,13 @@ class LoginView(Tk):
                 if self.counter_for_ban[login] >= 3:
                     UserController.update(user.id,ban=1)
 
-            elif user.role_id == 1:
+            elif user.role_id.id == 1:
                 self.counter_for_ban[login] = 0
                 self.message_Lable["text"] = f"Вход в окно Админа"
-                print("переход в админку")
+                UserController.update(user.id, date_auth = datetime.now().date())
+                print("переход в админку") #-------------------------------
 
-            elif user.first_auth == 1:
+            elif user.first_auth:
                 self.counter_for_ban[login] = 0
                 self.message_Lable["text"] = f"Вход в окно Изменения Пароля"
                 ChangePassWindow = ChangePassView(user.login)
@@ -88,13 +89,13 @@ class LoginView(Tk):
                 UserController.update(user.id, ban=1)
                 self.message_Lable["text"] = f"В связи не авторизации в течении месяца - ваша учётная запись была заблокированна.\nОбратитесь к администратору"
             
-            elif user.ban == 1:
+            elif user.ban:
                 self.message_Lable["text"] = f"Вы заблокированы.\nОбратитесь к администратору"
             
-            elif user.role_id == 2:
+            elif user.role_id.id == 2:
                 self.counter_for_ban[login] = 0
                 self.message_Lable["text"] = f"Вход в окно Пользователя"
-                print("Переход в окно пользователя")
+                print("Переход в окно пользователя") #---------------------------------------
 
             else:
                 self.message_Lable["text"] = "Произошла непредвиденная ошибка"
