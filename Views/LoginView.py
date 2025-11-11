@@ -4,6 +4,9 @@ from tkinter import *
 from Controllers.UserControllers import  *
 
 from Views.ChangePassView import ChangePassView
+from Views.AdminPanelView import AdminPanelView
+
+from datetime import datetime
 
 
 class LoginView(Tk):
@@ -75,16 +78,17 @@ class LoginView(Tk):
 
             elif user.role_id.id == 1:
                 self.counter_for_ban[login] = 0
-                self.message_Lable["text"] = f"Вход в окно Админа"
+                self.message_Lable["text"] = f"Переход в Панель Администратора"
                 UserController.update(user.id, date_auth = datetime.now().date())
-                print("переход в админку") #-------------------------------
+                AdminPanelWindow = AdminPanelView(user.login) # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                self.destroy()
 
             elif user.first_auth:
                 self.counter_for_ban[login] = 0
                 self.message_Lable["text"] = f"Вход в окно Изменения Пароля"
                 ChangePassWindow = ChangePassView(user.login)
 
-            elif user.date_auth is not None and (datetime.now().date() - user.date_auth).days >= 31:
+            elif user.role_id.id is not 1 and user.date_auth is not None and (datetime.now().date() - user.date_auth).days >= 31:
                 self.counter_for_ban[login] = 0
                 UserController.update(user.id, ban=1)
                 self.message_Lable["text"] = f"В связи не авторизации в течении месяца - ваша учётная запись была заблокированна.\nОбратитесь к администратору"
@@ -92,10 +96,10 @@ class LoginView(Tk):
             elif user.ban:
                 self.message_Lable["text"] = f"Вы заблокированы.\nОбратитесь к администратору"
             
-            elif user.role_id.id == 2:
+            elif user.role_id.id == 2: #---------------------------------------
                 self.counter_for_ban[login] = 0
-                self.message_Lable["text"] = f"Вход в окно Пользователя"
-                print("Переход в окно пользователя") #---------------------------------------
+                self.message_Lable["text"] = f"Переход в Панель Пользователя"
+                UserController.update(user.id, date_auth = datetime.now().date())
 
             else:
                 self.message_Lable["text"] = "Произошла непредвиденная ошибка"
