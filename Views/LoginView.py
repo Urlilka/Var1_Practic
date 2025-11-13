@@ -50,9 +50,17 @@ class LoginView(Tk):
         self.enter_Button.pack(anchor="center",expand=1)
 
 
+        # Кнопка выхода из панели
+        self.exit_Button = ttk.Button(text="Выход", command=self.Escape)
+        self.bind("<Escape>",lambda e: self.Escape())
+        self.exit_Button.pack(anchor="center",pady=30, expand=1)
+
+
         self.counter_for_ban = {}
 
 
+    def Escape(self):
+        self.destroy()
 
     def LoginFunc(self):
         """Функция Входа в Админ панель, Изменения пароля и с проверкой на разные случаи и функцией бана пользователя в зависимости от ситуаций.

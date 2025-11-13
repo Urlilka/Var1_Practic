@@ -63,12 +63,12 @@ class UserController:
         else:
             return False
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     # UserController.add("Admin","123456",role_id=1)
     # UserController.add("User","123456")
 
-    # for row in UserController.get():
-    #     print(row.login)
+    for row in UserController.get():
+        print(row.role_id.id, row.role_id.role)
 
     # UserController.auth("Admin","123456")
     # print(UserController.auth("Admin","123456").login)
