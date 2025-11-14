@@ -19,15 +19,15 @@ class AdminPanelView(Tk):
         self.create_login_Label = ttk.Label(self,text="Логин", foreground="#ff3366")
         self.create_login_Label.pack(anchor="center", pady=10)
         # Ввод создание логина
-        self.create_login_Label = ttk.Entry(self, foreground="#ff0099")
-        self.create_login_Label.pack(anchor="center")
+        self.create_login_Entry = ttk.Entry(self, foreground="#ff0099")
+        self.create_login_Entry.pack(anchor="center")
 
         # Текст создание пароля
         self.create_password_Label = ttk.Label(self,text="Пароль", foreground="#ff3366")
         self.create_password_Label.pack(anchor="center", pady=10)
         # Ввод создание логина
-        self.create_password_Label = ttk.Entry(self, foreground="#ff0099")
-        self.create_password_Label.pack(anchor="center")
+        self.create_password_Entry = ttk.Entry(self, foreground="#ff0099")
+        self.create_password_Entry.pack(anchor="center")
 
         # Кнопка Создания пользователя
         self.create_user_Button = ttk.Button(text="Создать Пользователя", command=self.Create_User)
@@ -43,15 +43,29 @@ class AdminPanelView(Tk):
         self.users_Treeview.heading("ban", text="Блокировка")
         self.users_Treeview.heading("date_auth", text="Дата авторизации")
         self.users_Treeview.heading("role", text="Роль")
+        # Настройка ширины
+        self.users_Treeview.column("#1",width=159)
+        self.users_Treeview.column("#2",width=159)
+        self.users_Treeview.column("#3",width=159)
+        self.users_Treeview.column("#4",width=159)
+        self.users_Treeview.column("#5",width=159)
         # Заполнение Таблицы
         self.enter_user_data()
         # Перенаправление в изменение данных пользователя
-
+        self.bind("<<TreeviewSelect>>",self.select_change_data)
         # Кнопка выхода из панели
         self.exit_Button = ttk.Button(text="Выход", command=self.Escape)
         self.bind("<Escape>",lambda e: self.Escape())
         self.exit_Button.pack(anchor="center", expand=1)
+
     
+    def select_change_data(self,event):
+        select = self.users_Treeview.selection()[0]
+        selected = self.users_Treeview.item(select)["values"][0]
+        if UserController.show(selected).role_id.id != 1:
+            print("Переход в меняние пароля")
+        else:
+            print("Сообщение о неудачи")
 
     def enter_user_data(self):
         for item in self.users_Treeview.get_children():
@@ -65,14 +79,14 @@ class AdminPanelView(Tk):
             else:
                 ban = "Нет"
 
-            if user.first_auth is None:
+            if user.date_auth is None:
                 date_auth = "Не входил"
             else:
                 date_auth = user.date_auth
         
-        user_list.append(
-            (user.login, user.password, ban, date_auth, user.role_id.role)
-        )
+            user_list.append(
+                (user.login, user.password, ban, date_auth, user.role_id.role)
+            )
 
         for user in user_list:
             self.users_Treeview.insert("",END,values=user)
@@ -84,7 +98,10 @@ class AdminPanelView(Tk):
         self.destroy()
     
     def Create_User(self):
-        print("Пока только в вашем воображении")
+        login = self.create_login_Entry.get()
+        password = self.create_password_Entry.get()
+        UserController.add(login,password)
+        print("Cообщение")
 
 
 if __name__ == "__main__":
