@@ -3,6 +3,8 @@ from tkinter import *
 
 from Controllers.UserControllers import  *
 
+from Views.ChangeUserDataView import ChangeUserDataView
+
 
 class AdminPanelView(Tk):
     def __init__(self, login):
@@ -30,8 +32,13 @@ class AdminPanelView(Tk):
         self.create_password_Entry.pack(anchor="center")
 
         # Кнопка Создания пользователя
-        self.create_user_Button = ttk.Button(text="Создать Пользователя", command=self.Create_User)
+        self.create_user_Button = ttk.Button(self,text="Создать Пользователя", command=self.Create_User)
+        self.bind("<Return>", lambda e: self.Create_User())
         self.create_user_Button.pack(anchor="center", expand=1)
+
+        # Текст для сообщений системы пользователю
+        self.message_Label = ttk.Label(self,text="", foreground="#ff3366")
+        self.message_Label.pack(anchor="center")
 
         # Таблица с пользователями
         column_headings=("login","password","ban","date_auth","role")
@@ -49,10 +56,13 @@ class AdminPanelView(Tk):
         self.users_Treeview.column("#3",width=159)
         self.users_Treeview.column("#4",width=159)
         self.users_Treeview.column("#5",width=159)
+
         # Заполнение Таблицы
         self.enter_user_data()
+
         # Перенаправление в изменение данных пользователя
         self.bind("<<TreeviewSelect>>",self.select_change_data)
+
         # Кнопка выхода из панели
         self.exit_Button = ttk.Button(text="Выход", command=self.Escape)
         self.bind("<Escape>",lambda e: self.Escape())
@@ -63,9 +73,10 @@ class AdminPanelView(Tk):
         select = self.users_Treeview.selection()[0]
         selected = self.users_Treeview.item(select)["values"][0]
         if UserController.show(selected).role_id.id != 1:
-            print("Переход в меняние пароля")
+            ChangeUserDataWindow = ChangeUserDataView(selected)
+            self.message_Label["text"] = "Переход в окно изменение пароля"
         else:
-            print("Сообщение о неудачи")
+            self.message_Label["text"] = "Недоступно"
 
     def enter_user_data(self):
         for item in self.users_Treeview.get_children():
@@ -100,8 +111,15 @@ class AdminPanelView(Tk):
     def Create_User(self):
         login = self.create_login_Entry.get()
         password = self.create_password_Entry.get()
-        UserController.add(login,password)
-        print("Cообщение")
+        if login != "" and password != "":
+            if login != UserController.show(login).login:
+                UserController.add(login,password)
+                self.message_Label["text"] = "Создание пользователя успешно"
+                self.enter_user_data()
+            else:
+                self.message_Label["text"] = "Пользователь с таким Логином уже существует"
+        else:
+            self.message_Label["text"] = "Создание пользователя завершилось ошибкой"
 
 
 if __name__ == "__main__":

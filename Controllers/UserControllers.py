@@ -68,8 +68,9 @@ if __name__ == "__main__":
     # UserController.add("User","123456")
 
     for row in UserController.get():
-        print(row.login,row.password,row.ban,row.first_auth,row.date_auth,row.role_id)
-
+        print(f"||Логин: {row.login}||Пароль: {row.password}||Бан: {row.ban}||Первый вход: {row.first_auth}||Дата входа:{row.date_auth}||ID Роли:{row.role_id}||")
+    
+    # print(UserController.show("User").login)
     # UserController.auth("Admin","123456")
     # print(UserController.auth("Admin","123456").login)
     # print(type(UserController.auth("Admin","123456")))
