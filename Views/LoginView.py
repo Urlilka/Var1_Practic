@@ -60,6 +60,8 @@ class LoginView(Tk):
 
 
     def Escape(self):
+        """Выход из окна
+        """
         self.destroy()
 
     def LoginFunc(self):

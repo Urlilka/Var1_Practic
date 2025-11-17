@@ -70,6 +70,8 @@ class AdminPanelView(Tk):
 
     
     def select_change_data(self,event):
+        """Переход в окно изменения выбранного пользователя
+        """
         select = self.users_Treeview.selection()[0]
         selected = self.users_Treeview.item(select)["values"][0]
         if UserController.show(selected).role_id.id != 1:
@@ -79,6 +81,8 @@ class AdminPanelView(Tk):
             self.message_Label["text"] = "Недоступно"
 
     def enter_user_data(self):
+        """Формирования данных в таблице
+        """
         for item in self.users_Treeview.get_children():
             self.users_Treeview.delete(item)
 
@@ -104,11 +108,15 @@ class AdminPanelView(Tk):
 
 
     def Escape(self):
+        """Выход из панели администратора
+        """
         from Views.LoginView import LoginView
         LoginViewWindow = LoginView()
         self.destroy()
     
     def Create_User(self):
+        """Создание пользователя по введённому логину и паролю
+        """
         login = self.create_login_Entry.get()
         password = self.create_password_Entry.get()
         if login != "" and password != "":

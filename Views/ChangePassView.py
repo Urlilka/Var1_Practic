@@ -62,6 +62,8 @@ class ChangePassView(Tk):
     
 
     def Change_Pass(self):
+        """Изменение пароля по введённому паролю
+        """
         old_pass = self.Old_Password_Entry.get()
         new_pass = self.New_Password_Entry.get()
         conf_new_pass = self.Conf_New_Password_Entry.get()
@@ -80,6 +82,8 @@ class ChangePassView(Tk):
             self.message_Lable["text"] = "Все поля должны быть заполнены"
 
     def Escape(self):
+        """Выход из окна
+        """
         self.destroy()
 
 if __name__ == "__main__":
