@@ -15,7 +15,7 @@ class AdminPanelView(Tk):
         self.title(f"Панель Администратора: {self.user.login}")
         self.geometry("800x600")
         self.resizable(False,False)
-        ttk.Style().theme_use("clam")
+        # ttk.Style().theme_use("clam")
 
         # Текст создание логина
         self.create_login_Label = ttk.Label(self,text="Логин", foreground="#ff3366")

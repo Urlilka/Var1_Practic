@@ -20,7 +20,7 @@ class LoginView(Tk):
         self.title("Информационная система")
         self.geometry("400x300")
         self.resizable(False,False)
-        ttk.Style().theme_use("clam")
+        # ttk.Style().theme_use("clam")
 
         
         # Поле ввода логина и подпись
