@@ -15,7 +15,6 @@ class AdminPanelView(Tk):
         self.title(f"Панель Администратора: {self.user.login}")
         self.geometry("800x600")
         self.resizable(False,False)
-        # ttk.Style().theme_use("clam")
 
         # Текст создание логина
         self.create_login_Label = ttk.Label(self,text="Логин", foreground="#ff3366")
@@ -62,6 +61,10 @@ class AdminPanelView(Tk):
 
         # Перенаправление в изменение данных пользователя
         self.bind("<<TreeviewSelect>>",self.select_change_data)
+
+        # Кнопка перезагрузки списка
+        self.tree_reboot_Button = ttk.Button(text="Перезагрузить список", command=self.enter_user_data)
+        self.tree_reboot_Button.pack(anchor="center", expand=1)
 
         # Кнопка выхода из панели
         self.exit_Button = ttk.Button(text="Выход", command=self.Escape)
@@ -131,5 +134,5 @@ class AdminPanelView(Tk):
 
 
 if __name__ == "__main__":
-    window = AdminPanelView("User")
+    window = AdminPanelView("Admin")
     window.mainloop()

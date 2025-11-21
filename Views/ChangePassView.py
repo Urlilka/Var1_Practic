@@ -15,7 +15,6 @@ class ChangePassView(Tk):
         self.title(f"Изменение пароля: {self.user.login}")
         self.geometry("350x350")
         self.resizable(False,False)
-        # ttk.Style().theme_use("clam")
 
 
         # Ввод старого пароля
