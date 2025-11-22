@@ -48,9 +48,13 @@ class ChangeUserDataView(Tk):
 
 
     def Exit(self):
+        """Выход
+        """
         self.destroy()
         
     def Change_user(self):
+        """Изменение логина и/или пароля пользователя на введённые в приложения
+        """
         login = self.Change_name_Entry.get()
         password = self.Change_password_Entry.get()
 
@@ -62,10 +66,14 @@ class ChangeUserDataView(Tk):
             self.message_Label["text"] = f"Данные Изменены\nНе забудьте перезагрузить список"
 
     def Change_ban(self):
+        """Изменение текущего статуса блокировки пользователя на противоположное
+        """
         UserController.update(self.user.id, ban = not self.user.ban)
         self.message_Label["text"] = f"Статус блокировки изменён\nНе забудьте перезагрузить список"
 
     def Change_data(self):
+        """Изменение даты входа на None
+        """
         UserController.update(self.user.id, date_auth = None)
         self.message_Label["text"] = f"Дата входа сброшена\nНе забудьте перезагрузить список"
 
